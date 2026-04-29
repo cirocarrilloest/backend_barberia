@@ -13,7 +13,7 @@ export const registrarUsuario = async (req, res) => {
         message: error.details.map((e) => e.message), // Retornar un array con los mensajes de error de validación
       });
     }
-    const { nombre, email, pass } = req.body; // Desestructurar los datos de entrada para obtener el nombre, email y contraseña
+    const { nombre, email, pass, telefono } = req.body; // Desestructurar los datos de entrada para obtener el nombre, email y contraseña
 
     // Verificar si el usuario ya existe en la base de datos
     const usuarioExistente = await userModel.findUserByEmail(email); // Buscar un usuario en la base de datos utilizando el email proporcionado
@@ -25,7 +25,13 @@ export const registrarUsuario = async (req, res) => {
       });
     }
     // Crear un nuevo usuario en la base de datos
-    const nuevoUsuario = await userModel.createUser({ nombre, email, pass }); // Crear un nuevo usuario en la base de datos utilizando los datos proporcionados
+    const nuevoUsuario = await userModel.createUser({
+      nombre,
+      email,
+      pass,
+      telefono,
+      rol: "usuario", // Asignar el rol de "usuario" por defecto al nuevo usuario registrado
+    }); // Crear un nuevo usuario en la base de datos utilizando los datos proporcionados
     delete nuevoUsuario.pass;
     res.status(201).json({
       ok: true,

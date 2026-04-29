@@ -48,6 +48,36 @@ export const validarServicio = (req, res, next) => {
   next();
 };
 
+// Validación para actualizar servicio (todos los campos opcionales)
+export const validarActualizarServicio = (req, res, next) => {
+  const schema = joi.object({
+    nombre: joi.string().min(3).max(100).optional(),
+    descripcion: joi.string().max(500).optional().allow(""),
+    duracion: joi.number().integer().min(5).max(240).optional(),
+    precio: joi.number().positive().optional(),
+    activo: joi.boolean().optional(),
+  });
+
+  const { error } = schema.validate(req.body);
+
+  if (error) {
+    return res.status(400).json({
+      ok: false,
+      message: error.details[0].message,
+    });
+  }
+
+  // Verificar que al menos un campo viene para actualizar
+  if (Object.keys(req.body).length === 0) {
+    return res.status(400).json({
+      ok: false,
+      message: "Debes proporcionar al menos un campo para actualizar",
+    });
+  }
+
+  next();
+};
+
 // Validación para ID en parámetros
 export const validarId = (req, res, next) => {
   const schema = joi.object({

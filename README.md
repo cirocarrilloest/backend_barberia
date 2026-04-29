@@ -46,6 +46,12 @@ npm install express bcryptjs jsonwebtoken dotenv cors mysql2 joi morgan chalk cl
 npm install -D nodemon
 ```
 
+### Ejecutar seed
+
+```bash
+node seed.js
+```
+
 ### Ejecutar aplicación
 
 ```bash

@@ -6,6 +6,8 @@ import { esAdmin } from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
+// Ruta pública para obtener barberos (cualquier usuario autenticado)
+router.get("/barberos/listar", authMiddleware, userController.getBarberos);
 // Todas las rutas requieren autenticación y ser admin
 router.use(authMiddleware, esAdmin);
 
@@ -15,6 +17,5 @@ router.post("/", userController.createUsuario);
 router.put("/:id", userController.updateUsuario);
 router.delete("/:id", userController.deleteUsuario);
 router.patch("/:id/rol", userController.asignarRol);
-// Ruta pública para obtener barberos (cualquier usuario autenticado)
-router.get("/barberos/listar", authMiddleware, userController.getBarberos);
+
 export default router;

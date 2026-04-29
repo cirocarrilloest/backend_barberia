@@ -3,7 +3,10 @@ import express from "express";
 import * as servicioController from "../controllers/servicioController.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
 import { esAdmin } from "../middlewares/roleMiddleware.js";
-import { validarServicio } from "../middlewares/validationMiddleware.js";
+import {
+  validarActualizarServicio,
+  validarServicio,
+} from "../middlewares/validationMiddleware.js";
 
 const router = express.Router();
 
@@ -23,7 +26,7 @@ router.put(
   "/:id",
   authMiddleware,
   esAdmin,
-  validarServicio,
+  validarActualizarServicio,
   servicioController.actualizarServicio,
 );
 router.delete(

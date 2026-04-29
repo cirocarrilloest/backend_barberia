@@ -64,14 +64,21 @@ INSERT INTO servicios (nombre, descripcion, duracion, precio) VALUES
 ('Tinte', 'Aplicación de tinte para cabello', 60, 35000),
 ('Lavado de cabello', 'Lavado con productos especiales', 15, 8000);
 
--- Insertar admin por defecto (password: admin123)
-INSERT INTO usuarios (nombre, email, pass, rol) VALUES 
-('Administrador', 'admin@barberia.com', '$2a$10$rVgYqG4Yq8Yq8Yq8Yq8YuO8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8', 'admin');
+-- ver datos de las tablas
+select * from usuarios;
+select * from servicios;
+select * from citas;
 
--- Insertar barbero por defecto (password: barbero123)
-INSERT INTO usuarios (nombre, email, pass, rol) VALUES 
-('Juan Pérez', 'juan@barberia.com', '$2a$10$rVgYqG4Yq8Yq8Yq8Yq8YuO8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8', 'barbero');
+-- consulta
+SELECT c.*, b.nombre as barbero_nombre, s.nombre as servicio_nombre
+FROM citas c
+JOIN usuarios b ON c.barbero_id = b.id
+JOIN servicios s ON c.servicio_id = s.id
+WHERE c.cliente_id = 3  -- Reemplaza con un ID válido
+ORDER BY c.fecha DESC, c.hora DESC
+LIMIT 10;
 
 -- NOTA: Las contraseñas hash son ejemplos. Para producción, genera hashes reales con bcrypt
--- admin123 = $2a$10$YourHashHere
--- barbero123 = $2a$10$YourHashHere
+-- admin123 = 
+-- barbero123 = 
+-- 123456 = usertest

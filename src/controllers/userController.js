@@ -186,11 +186,139 @@ export const asignarRol = async (req, res) => {
   }
 };
 
+// Actualizar mi propio perfil (cliente/barbero)
+export const updateMiPerfil = async (req, res) => {
+  try {
+    // ✅ Verificar que req.body existe
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({
+        ok: false,
+        message: "No se enviaron datos para actualizar",
+      });
+    }
+
+    const usuarioId = req.usuario.id;
+    const { nombre, email, telefono, pass } = req.body;
+
+    const usuarioExistente = await userModel.getUserById(usuarioId);
+    if (!usuarioExistente) {
+      return res.status(404).json({
+        ok: false,
+        message: "Usuario no encontrado",
+      });
+    }
+
+    const pool = getPool();
+
+    // Construir query dinámicamente según los campos enviados
+    const updates = [];
+    const params = [];
+
+    if (nombre !== undefined) {
+      updates.push("nombre = ?");
+      params.push(nombre);
+    }
+
+    if (email !== undefined) {
+      // Verificar que el nuevo email no esté en uso por otro usuario
+      if (email !== usuarioExistente.email) {
+        const [emailExiste] = await pool.execute(
+          "SELECT id FROM usuarios WHERE email = ? AND id != ?",
+          [email.toLowerCase(), usuarioId],
+        );
+        if (emailExiste.length > 0) {
+          return res.status(409).json({
+            ok: false,
+            message: "El email ya está en uso por otro usuario",
+          });
+        }
+        updates.push("email = ?");
+        params.push(email.toLowerCase());
+      }
+    }
+
+    if (telefono !== undefined) {
+      updates.push("telefono = ?");
+      params.push(telefono || null);
+    }
+
+    if (pass) {
+      const salt = await bcrypt.genSalt(
+        parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10,
+      );
+      const hashedPassword = await bcrypt.hash(pass, salt);
+      updates.push("pass = ?");
+      params.push(hashedPassword);
+    }
+
+    // Si no hay nada que actualizar
+    if (updates.length === 0) {
+      return res.status(400).json({
+        ok: false,
+        message: "No se proporcionaron campos válidos para actualizar",
+      });
+    }
+
+    const query = `UPDATE usuarios SET ${updates.join(", ")} WHERE id = ?`;
+    params.push(usuarioId);
+
+    await pool.execute(query, params);
+
+    const usuarioActualizado = await userModel.getUserById(usuarioId);
+    res.json({
+      ok: true,
+      message: "Perfil actualizado exitosamente",
+      usuario: usuarioActualizado,
+    });
+  } catch (error) {
+    console.error("Error al actualizar perfil:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+// Eliminar mi propia cuenta
+export const deleteMiCuenta = async (req, res) => {
+  try {
+    const usuarioId = req.usuario.id;
+
+    // Verificar si tiene citas pendientes
+    const pool = getPool();
+    const [citas] = await pool.execute(
+      `SELECT COUNT(*) as total FROM citas 
+       WHERE cliente_id = ? AND estado IN ('pendiente', 'confirmada')`,
+      [usuarioId],
+    );
+
+    if (citas[0].total > 0) {
+      return res.status(400).json({
+        ok: false,
+        message: `No puedes eliminar tu cuenta porque tienes ${citas[0].total} cita(s) pendiente(s)`,
+      });
+    }
+
+    await pool.execute(`DELETE FROM usuarios WHERE id = ?`, [usuarioId]);
+
+    res.json({
+      ok: true,
+      message: "Cuenta eliminada exitosamente",
+    });
+  } catch (error) {
+    console.error("Error al eliminar cuenta:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
 // Listar solo barberos
 export const getBarberos = async (req, res) => {
   try {
     const pool = getPool();
-    const query = `SELECT id, nombre, email, telefono FROM usuarios WHERE rol = 'barbero' AND activo = 1`;
+    const query = `SELECT id, nombre, email, telefono FROM usuarios WHERE rol = 'barbero'`;
     const [rows] = await pool.execute(query);
     res.json({
       ok: true,

@@ -5,19 +5,20 @@ import bcrypt from "bcryptjs"; //Importa bcrypt para el hashing de contraseñas
 //Función para crear un nuevo usuario en la base de datos
 export const createUser = async (userData) => {
   const pool = getPool(); //Obtiene el pool de conexiones
-  const { nombre, email, pass, rol = "cliente" } = userData; //Desestructura los datos del usuario
+  const { nombre, email, pass, rol = "cliente", telefono = null } = userData; //Desestructura los datos del usuario
 
   const salt = await bcrypt.genSalt(
     parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10,
   ); //Genera un salt para el hashing de la contraseña
   const hashedPassword = await bcrypt.hash(pass, salt); //Hashea la contraseña utilizando bcrypt
 
-  const query = `INSERT INTO usuarios (nombre, email, pass, rol) VALUES (?, ?, ?, ?)`; //Consulta SQL para insertar un nuevo usuario
+  const query = `INSERT INTO usuarios (nombre, email, pass, rol, telefono) VALUES (?, ?, ?, ?, ?)`; //Consulta SQL para insertar un nuevo usuario
   const [result] = await pool.execute(query, [
     nombre,
     email.toLowerCase(),
     hashedPassword,
     rol,
+    telefono,
   ]); //Ejecuta la consulta con los datos del usuario
   return getUserById(result.insertId); //Devuelve el usuario recién creado obteniéndolo por su ID
 };
