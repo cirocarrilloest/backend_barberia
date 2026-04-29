@@ -29,7 +29,7 @@ export const verificarDuplicado = async (barbero_id, fecha, hora) => {
   const query = `
         SELECT id FROM citas 
         WHERE barbero_id = ? AND fecha = ? AND hora = ? 
-        AND estado NOT IN ('pendiente', 'confirmada')
+        AND estado IN ('pendiente', 'confirmada')
     `;
   const [rows] = await pool.execute(query, [barbero_id, fecha, hora]);
   return rows.length > 0;

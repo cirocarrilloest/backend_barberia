@@ -30,7 +30,7 @@ export const registrarUsuario = async (req, res) => {
       email,
       pass,
       telefono,
-      rol: "usuario", // Asignar el rol de "usuario" por defecto al nuevo usuario registrado
+      rol: "cliente", // Asignar el rol de "cliente" por defecto al nuevo usuario registrado
     }); // Crear un nuevo usuario en la base de datos utilizando los datos proporcionados
     delete nuevoUsuario.pass;
     res.status(201).json({

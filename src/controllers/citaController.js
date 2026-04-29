@@ -531,7 +531,7 @@ export const getReporteIngresos = async (req, res) => {
 export const getServiciosTop = async (req, res) => {
   try {
     const { fecha_inicio, fecha_fin, limite = 5 } = req.query;
-    const limiteNum = parseInt(limite);
+    let limiteNum = parseInt(limite);
     if (isNaN(limiteNum) || limiteNum <= 0) {
       limiteNum = 5; // Valor por defecto si el límite no es válido
     }
@@ -554,7 +554,10 @@ export const getServiciosTop = async (req, res) => {
 export const getClientesTop = async (req, res) => {
   try {
     const { fecha_inicio, fecha_fin, limite = 10 } = req.query;
-    const limiteNum = parseInt(limite);
+    let limiteNum = parseInt(limite);
+    if (isNaN(limiteNum) || limiteNum <= 0) {
+      limiteNum = 10; // Valor por defecto si el límite no es válido
+    }
     const clientes = await citaModel.getClientesMasFrecuentes(
       fecha_inicio,
       fecha_fin,
