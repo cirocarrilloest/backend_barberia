@@ -1,5 +1,5 @@
 {
-  "name": "mi-proyecto-node",
+  "name": "backend-barberia",
   "version": "1.0.0",
   "description": "Sistema de gestión de barbería con reservas, servicios y autenticación de usuarios",
   "main": "src/app.js",
@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
+    "seed": "node seed.js",
     "dev:clear": "nodemon --exec \"clear && node\" src/app.js"
   },
   "keywords": [
@@ -15,7 +16,7 @@
     "mysql",
     "jwt"
   ],
-  "author": "",
+  "author": "estudiante sena",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.3",

@@ -12,6 +12,11 @@ const router = express.Router();
 
 // Rutas públicas (requieren autenticación pero cualquier rol puede ver)
 router.get("/", authMiddleware, servicioController.getServicios);
+router.get(
+  "/:id/barberos",
+  authMiddleware,
+  servicioController.getBarberosPorServicio,
+);
 router.get("/:id", authMiddleware, servicioController.getServicioById);
 
 // Rutas solo para admin
@@ -29,6 +34,14 @@ router.put(
   validarActualizarServicio,
   servicioController.actualizarServicio,
 );
+
+router.patch(
+  "/:id/toggle-activo",
+  authMiddleware,
+  esAdmin,
+  servicioController.toggleActivoServicio,
+);
+
 router.delete(
   "/:id",
   authMiddleware,

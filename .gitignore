@@ -71,3 +71,10 @@ build/
 
 config/*.env
 config/*.local.js
+
+
+# =========================
+# Otros archivos que no quieres subir
+# =========================
+
+experimental.js

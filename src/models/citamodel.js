@@ -1,6 +1,22 @@
 //src/models/citamodel.js
 import { getPool } from "../config/db.js";
 
+const getDiaSemana = (fecha) => {
+  const diasSemana = [
+    "domingo",
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+    "sabado",
+  ];
+  // Parsear manualmente evita el problema UTC
+  const [anio, mes, dia] = fecha.split("-").map(Number);
+  const fechaObj = new Date(anio, mes - 1, dia); // mes - 1 porque Date usa 0-11
+  return diasSemana[fechaObj.getDay()];
+};
+
 // Crear nueva cita
 export const createCita = async (citaData) => {
   const pool = getPool();
@@ -151,6 +167,16 @@ export const cancelarCita = async (id) => {
 
 // Verificar disponibilidad de horario
 export const verificarDisponibilidad = async (barbero_id, fecha, hora) => {
+  // Primero verificar si el barbero trabaja en ese día y hora
+  const enHorarioLaboral = await verificarHorarioLaboral(
+    barbero_id,
+    fecha,
+    hora,
+  );
+  if (!enHorarioLaboral) {
+    return false; // Fuera del horario laboral
+  }
+  // Luego verificar si ya tiene una cita en ese horario
   const pool = getPool();
   const query = `
         SELECT COUNT(*) as count FROM citas 
@@ -557,6 +583,100 @@ export const getTasaCancelacionPorBarbero = async (
   const [rows] = await pool.execute(query, params);
   return rows;
 };
+// Obtener horarios disponibles de un barbero en una fecha específica
+// DESPUÉS — reemplaza con esto:
+export const getHorariosDisponibles = async (barbero_id, fecha) => {
+  const pool = getPool();
+
+  const diaSemana = getDiaSemana(fecha); // ✅ usa la función auxiliar
+
+  const [horario] = await pool.execute(
+    `SELECT hora_inicio, hora_fin FROM horarios_barbero 
+     WHERE barbero_id = ? AND dia_semana = ? AND activo = TRUE`,
+    [barbero_id, diaSemana],
+  );
+
+  if (horario.length === 0) return [];
+
+  const slots = [];
+  let horaActual = new Date(`2000-01-01T${horario[0].hora_inicio}`);
+  const horaFinal = new Date(`2000-01-01T${horario[0].hora_fin}`);
+
+  while (horaActual < horaFinal) {
+    slots.push(horaActual.toTimeString().slice(0, 5));
+    horaActual.setMinutes(horaActual.getMinutes() + 30);
+  }
+
+  const ocupados = await getHorariosOcupados(barbero_id, fecha);
+  const ocupadosSet = new Set(ocupados.map((h) => h.substring(0, 5)));
+
+  return slots.filter((slot) => !ocupadosSet.has(slot));
+};
+
+export const getCitasSemanaByBarbero = async (barbero_id, fecha_inicio) => {
+  const pool = getPool();
+
+  // Calcular fecha fin (7 días después)
+  const inicio = new Date(fecha_inicio);
+  const fin = new Date(inicio);
+  fin.setDate(fin.getDate() + 6);
+  const fecha_fin = fin.toISOString().split("T")[0];
+
+  const query = `
+    SELECT c.*,
+           u.nombre as cliente_nombre, u.email as cliente_email, u.telefono,
+           s.nombre as servicio_nombre, s.duracion, s.precio
+    FROM citas c
+    JOIN usuarios u ON c.cliente_id = u.id
+    JOIN servicios s ON c.servicio_id = s.id
+    WHERE c.barbero_id = ?
+      AND c.fecha BETWEEN ? AND ?
+      AND c.estado NOT IN ('cancelada')
+    ORDER BY c.fecha ASC, c.hora ASC
+  `;
+
+  const [rows] = await pool.execute(query, [
+    barbero_id,
+    fecha_inicio,
+    fecha_fin,
+  ]);
+
+  // Agrupar por fecha
+  const agenda = {};
+  rows.forEach((cita) => {
+    const fecha = cita.fecha.toISOString
+      ? cita.fecha.toISOString().split("T")[0]
+      : cita.fecha;
+    if (!agenda[fecha]) agenda[fecha] = [];
+    agenda[fecha].push(cita);
+  });
+
+  return { agenda, fecha_inicio, fecha_fin };
+};
+// Verificar si el barbero trabaja en ese día y hora
+export const verificarHorarioLaboral = async (barbero_id, fecha, hora) => {
+  const pool = getPool();
+
+  const diaSemana = getDiaSemana(fecha); // ✅ usa la función auxiliar
+
+  const query = `
+    SELECT hora_inicio, hora_fin 
+    FROM horarios_barbero 
+    WHERE barbero_id = ? AND dia_semana = ? AND activo = TRUE
+  `;
+  const [rows] = await pool.execute(query, [barbero_id, diaSemana]);
+
+  if (rows.length === 0) {
+    return false;
+  }
+
+  const { hora_inicio, hora_fin } = rows[0];
+  const horaStr = hora.substring(0, 5);
+  const inicioStr = hora_inicio.substring(0, 5);
+  const finStr = hora_fin.substring(0, 5);
+
+  return horaStr >= inicioStr && horaStr < finStr;
+};
 
 export default {
   createCita,
@@ -580,4 +700,7 @@ export default {
   getDistribucionCitasPorHora,
   getDashboardStats,
   getTasaCancelacionPorBarbero,
+  getHorariosDisponibles,
+  getCitasSemanaByBarbero,
+  verificarHorarioLaboral,
 };

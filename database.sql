@@ -55,29 +55,24 @@ CREATE TABLE citas (
     INDEX idx_estado(estado)
 );
 
--- Insertar datos iniciales
--- Insertar servicios por defecto
-INSERT INTO servicios (nombre, descripcion, duracion, precio) VALUES
-('Corte de cabello', 'Corte tradicional o moderno', 30, 15000),
-('Barba', 'Arreglo y perfilado de barba', 20, 10000),
-('Corte + Barba', 'Combo completo de corte y barba', 50, 22000),
-('Tinte', 'Aplicación de tinte para cabello', 60, 35000),
-('Lavado de cabello', 'Lavado con productos especiales', 15, 8000);
+CREATE TABLE IF NOT EXISTS horarios_barbero (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  barbero_id INT NOT NULL,
+  dia_semana ENUM('lunes','martes','miercoles','jueves','viernes','sabado','domingo') NOT NULL,
+  hora_inicio TIME NOT NULL,
+  hora_fin TIME NOT NULL,
+  activo BOOLEAN DEFAULT TRUE,
+  FOREIGN KEY (barbero_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_horario (barbero_id, dia_semana)
+);
 
 -- ver datos de las tablas
 select * from usuarios;
 select * from servicios;
 select * from citas;
-
--- consulta
-SELECT c.*, b.nombre as barbero_nombre, s.nombre as servicio_nombre
-FROM citas c
-JOIN usuarios b ON c.barbero_id = b.id
-JOIN servicios s ON c.servicio_id = s.id
-WHERE c.cliente_id = 3  -- Reemplaza con un ID válido
-ORDER BY c.fecha DESC, c.hora DESC
-LIMIT 10;
-
+select * from horarios_barbero;
+-- ver horarios
+SELECT * FROM horarios_barbero WHERE barbero_id = 13;
 -- NOTA: Las contraseñas hash son ejemplos. Para producción, genera hashes reales con bcrypt
 -- admin123 = 
 -- barbero123 = 

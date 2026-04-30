@@ -9,7 +9,6 @@ export const agendarCita = async (req, res) => {
     const { barbero_id, servicio_id, fecha, hora, notas } = req.body;
     const cliente_id = req.usuario.id;
 
-    // Validar que el usuario sea cliente o admin
     if (req.usuario.rol !== "cliente" && req.usuario.rol !== "admin") {
       return res.status(403).json({
         ok: false,
@@ -17,7 +16,6 @@ export const agendarCita = async (req, res) => {
       });
     }
 
-    // Validar campos requeridos
     if (!barbero_id || !servicio_id || !fecha || !hora) {
       return res.status(400).json({
         ok: false,
@@ -26,7 +24,7 @@ export const agendarCita = async (req, res) => {
       });
     }
 
-    // Verificar que el barbero existe y tiene rol de barbero
+    // Primero verificar que el barbero existe
     const barbero = await getUserById(barbero_id);
     if (!barbero || barbero.rol !== "barbero") {
       return res.status(400).json({
@@ -44,6 +42,20 @@ export const agendarCita = async (req, res) => {
       });
     }
 
+    // Ahora sí verificar horario laboral
+    const enHorarioLaboral = await citaModel.verificarHorarioLaboral(
+      barbero_id,
+      fecha,
+      hora,
+    );
+    if (!enHorarioLaboral) {
+      return res.status(400).json({
+        ok: false,
+        message:
+          "El horario seleccionado está fuera de la jornada laboral del barbero. Consulta los horarios disponibles.",
+      });
+    }
+
     // Verificar duplicación
     const duplicado = await citaModel.verificarDuplicado(
       barbero_id,
@@ -57,7 +69,6 @@ export const agendarCita = async (req, res) => {
       });
     }
 
-    // Crear cita
     const nuevaCita = await citaModel.createCita({
       cliente_id,
       barbero_id,
@@ -348,6 +359,48 @@ export const getAllCitas = async (req, res) => {
   }
 };
 
+export const confirmarCita = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const cita = await citaModel.getCitaById(id);
+    if (!cita) {
+      return res.status(404).json({
+        ok: false,
+        message: "Cita no encontrada",
+      });
+    }
+
+    if (req.usuario.rol === "barbero" && cita.barbero_id !== req.usuario.id) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permiso para confirmar esta cita",
+      });
+    }
+
+    if (cita.estado !== "pendiente") {
+      return res.status(400).json({
+        ok: false,
+        message: `No se puede confirmar una cita en estado "${cita.estado}"`,
+      });
+    }
+
+    const citaConfirmada = await citaModel.updateCitaEstado(id, "confirmada");
+
+    res.json({
+      ok: true,
+      message: "Cita confirmada exitosamente",
+      cita: citaConfirmada,
+    });
+  } catch (error) {
+    console.error("Error al confirmar cita:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
 // Finalizar cita (marcar como completada)
 export const finalizarCita = async (req, res) => {
   try {
@@ -378,6 +431,86 @@ export const finalizarCita = async (req, res) => {
     });
   } catch (error) {
     console.error("Error al finalizar cita:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+export const reagendarCita = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { fecha, hora } = req.body;
+
+    if (!fecha || !hora) {
+      return res.status(400).json({
+        ok: false,
+        message: "Se requiere fecha y hora",
+      });
+    }
+
+    const cita = await citaModel.getCitaById(id);
+    if (!cita) {
+      return res.status(404).json({
+        ok: false,
+        message: "Cita no encontrada",
+      });
+    }
+
+    // Solo el cliente dueño o admin pueden reagendar
+    if (req.usuario.rol === "cliente" && cita.cliente_id !== req.usuario.id) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permiso para reagendar esta cita",
+      });
+    }
+
+    // Solo se pueden reagendar citas pendientes
+    if (cita.estado !== "pendiente") {
+      return res.status(400).json({
+        ok: false,
+        message: `No se puede reagendar una cita en estado "${cita.estado}". Solo se permiten citas pendientes`,
+      });
+    }
+
+    // Verificar que la nueva fecha no sea en el pasado
+    const hoy = new Date().toISOString().split("T")[0];
+    if (fecha < hoy) {
+      return res.status(400).json({
+        ok: false,
+        message: "No se puede reagendar a una fecha pasada",
+      });
+    }
+
+    // Verificar que el nuevo slot esté disponible
+    const duplicado = await citaModel.verificarDuplicado(
+      cita.barbero_id,
+      fecha,
+      hora,
+    );
+    if (duplicado) {
+      return res.status(409).json({
+        ok: false,
+        message: "El barbero ya tiene una cita en ese horario",
+      });
+    }
+
+    const citaActualizada = await citaModel.updateCita(id, {
+      barbero_id: cita.barbero_id,
+      servicio_id: cita.servicio_id,
+      fecha,
+      hora,
+      notas: cita.notas,
+    });
+
+    res.json({
+      ok: true,
+      message: "Cita reagendada exitosamente",
+      cita: citaActualizada,
+    });
+  } catch (error) {
+    console.error("Error al reagendar cita:", error);
     res.status(500).json({
       ok: false,
       message: "Error interno del servidor",
@@ -630,15 +763,97 @@ export const getTasaCancelacion = async (req, res) => {
   }
 };
 
+export const getHorariosDisponibles = async (req, res) => {
+  try {
+    const { id: barbero_id } = req.params;
+    const { fecha } = req.query;
+
+    if (!fecha) {
+      return res.status(400).json({
+        ok: false,
+        message: "Se requiere el parámetro fecha (YYYY-MM-DD)",
+      });
+    }
+
+    // Verificar que el barbero existe
+    const barbero = await getUserById(barbero_id);
+    if (!barbero || barbero.rol !== "barbero") {
+      return res.status(404).json({
+        ok: false,
+        message: "Barbero no encontrado",
+      });
+    }
+
+    const disponibles = await citaModel.getHorariosDisponibles(
+      barbero_id,
+      fecha,
+    );
+
+    res.json({
+      ok: true,
+      barbero_id,
+      fecha,
+      horarios_disponibles: disponibles,
+      total_disponibles: disponibles.length,
+    });
+  } catch (error) {
+    console.error("Error al obtener horarios disponibles:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+// Agenda semanal para barbero
+export const getAgendaSemana = async (req, res) => {
+  try {
+    const { id: barbero_id } = req.params;
+    const { fecha_inicio } = req.query;
+
+    const fecha = fecha_inicio || new Date().toISOString().split("T")[0];
+
+    // Si es barbero, solo puede ver su propia agenda
+    if (
+      req.usuario.rol === "barbero" &&
+      parseInt(barbero_id) !== req.usuario.id
+    ) {
+      return res.status(403).json({
+        ok: false,
+        message: "No tienes permiso para ver la agenda de otro barbero",
+      });
+    }
+
+    const resultado = await citaModel.getCitasSemanaByBarbero(
+      barbero_id,
+      fecha,
+    );
+
+    res.json({
+      ok: true,
+      ...resultado,
+      total_citas: Object.values(resultado.agenda).flat().length,
+    });
+  } catch (error) {
+    console.error("Error al obtener agenda semanal:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
 export default {
   agendarCita,
   getMisCitas,
   getCitaById,
   getCitasBarbero,
   cancelarCita,
+  reagendarCita,
   actualizarEstadoCita,
   verificarDisponibilidad,
   getAllCitas,
+  confirmarCita,
   finalizarCita,
   getProximasCitas,
   getHistorialCitas,
@@ -650,4 +865,6 @@ export default {
   getDashboard,
   getDistribucionHoraria,
   getTasaCancelacion,
+  getHorariosDisponibles,
+  getAgendaSemana,
 };

@@ -1,8 +1,10 @@
 //src/controllers/authController.js
 import * as userModel from "../models/userModel.js"; // Importar el modelo de usuario para interactuar con la base de datos
-import { generarToken } from "../services/tokenService.js"; // Importar la función para generar tokens de autenticación
+import { generarToken, invalidarToken } from "../services/tokenService.js"; // Importar funciones para generar e invalidar tokens de autenticación
 import { validarRegistro, validarIngreso } from "../utils/validador.js"; // Importar las funciones de validación para los datos de registro e ingreso
 // Función para manejar el registro de un nuevo usuario
+import { getPool } from "../config/db.js"; // Importar la función para obtener una conexión a la base de datos
+import bcrypt from "bcryptjs"; // Importar bcrypt para hashear contraseñas
 export const registrarUsuario = async (req, res) => {
   try {
     // Validar los datos de entrada utilizando la función de validación de registro
@@ -108,6 +110,24 @@ export const ingresarUsuario = async (req, res) => {
     });
   }
 };
+// Función para manejar el cierre de sesión de un usuario
+export const logoutUsuario = async (req, res) => {
+  try {
+    const token = req.header("Authorization").substring(7);
+    invalidarToken(token);
+    res.json({
+      ok: true,
+      message: "Sesión cerrada exitosamente",
+    });
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
 // Función para obtener el perfil del usuario autenticado
 export const getPerfilUsuario = async (req, res) => {
   try {
@@ -131,9 +151,144 @@ export const getPerfilUsuario = async (req, res) => {
     });
   }
 };
+
+export const cambiarPassword = async (req, res) => {
+  try {
+    const { pass_actual, pass_nueva } = req.body;
+
+    if (!pass_actual || !pass_nueva) {
+      return res.status(400).json({
+        ok: false,
+        message: "Se requiere pass_actual y pass_nueva",
+      });
+    }
+
+    if (pass_nueva.length < 6) {
+      return res.status(400).json({
+        ok: false,
+        message: "La nueva contraseña debe tener al menos 6 caracteres",
+      });
+    }
+
+    // Obtener usuario con su contraseña hasheada
+    const pool = getPool();
+    const [rows] = await pool.execute(
+      "SELECT id, pass FROM usuarios WHERE id = ?",
+      [req.usuario.id],
+    );
+
+    const usuario = rows[0];
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        message: "Usuario no encontrado",
+      });
+    }
+
+    // Verificar que la contraseña actual es correcta
+    const contraseniaValida = await userModel.verifypass(
+      pass_actual,
+      usuario.pass,
+    );
+    if (!contraseniaValida) {
+      return res.status(401).json({
+        ok: false,
+        message: "La contraseña actual es incorrecta",
+      });
+    }
+
+    // Hashear y guardar la nueva contraseña
+    const salt = await bcrypt.genSalt(
+      parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10,
+    );
+    const hashedPassword = await bcrypt.hash(pass_nueva, salt);
+
+    await pool.execute("UPDATE usuarios SET pass = ? WHERE id = ?", [
+      hashedPassword,
+      req.usuario.id,
+    ]);
+
+    res.json({
+      ok: true,
+      message: "Contraseña actualizada exitosamente",
+    });
+  } catch (error) {
+    console.error("Error al cambiar contraseña:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+export const getPerfilBarbero = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pool = getPool();
+
+    // Obtener datos del barbero
+    const [rows] = await pool.execute(
+      `SELECT id, nombre, email, telefono FROM usuarios 
+       WHERE id = ? AND rol = 'barbero'`,
+      [id],
+    );
+
+    if (!rows[0]) {
+      return res.status(404).json({
+        ok: false,
+        message: "Barbero no encontrado",
+      });
+    }
+
+    // Obtener estadísticas públicas del barbero
+    const [stats] = await pool.execute(
+      `SELECT 
+        COUNT(*) as total_citas,
+        SUM(CASE WHEN estado = 'completada' THEN 1 ELSE 0 END) as citas_completadas,
+        SUM(CASE WHEN estado = 'cancelada' THEN 1 ELSE 0 END) as citas_canceladas
+       FROM citas WHERE barbero_id = ?`,
+      [id],
+    );
+
+    // Obtener servicios más realizados por este barbero
+    const [servicios] = await pool.execute(
+      `SELECT s.id, s.nombre, s.precio, s.duracion, COUNT(c.id) as veces_realizado
+       FROM servicios s
+       JOIN citas c ON s.id = c.servicio_id
+       WHERE c.barbero_id = ? AND c.estado = 'completada'
+       GROUP BY s.id
+       ORDER BY veces_realizado DESC
+       LIMIT 5`,
+      [id],
+    );
+
+    res.json({
+      ok: true,
+      barbero: {
+        ...rows[0],
+        estadisticas: {
+          total_citas: stats[0].total_citas,
+          citas_completadas: stats[0].citas_completadas,
+          citas_canceladas: stats[0].citas_canceladas,
+        },
+        servicios_frecuentes: servicios,
+      },
+    });
+  } catch (error) {
+    console.error("Error al obtener perfil de barbero:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
 // Exportar las funciones del controlador de autenticación para que puedan ser utilizadas en las rutas
 export default {
   registrarUsuario, // Función para manejar el registro de un nuevo usuario
   ingresarUsuario, // Función para manejar el ingreso de un usuario existente
+  cambiarPassword, // Función para cambiar la contraseña de un usuario autenticado
   getPerfilUsuario, // Función para obtener el perfil del usuario autenticado
+  logoutUsuario, // Función para cerrar sesión de un usuario
+  getPerfilBarbero, // Función para obtener el perfil de un barbero específico
 };

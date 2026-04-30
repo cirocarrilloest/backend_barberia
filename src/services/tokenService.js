@@ -21,8 +21,19 @@ export const generarToken = (id, email, rol) => {
 export const verifyToken = (token) => {
   //verificar token JWT y devolver datos decodificados o null si no es válido
   try {
-    return jwt.verify(token, process.env.JWT_SECRET); //devolver datos de token decodificados
+    if (tokenEstaInvalidado(token)) return null; //verificar si el token ha sido invalidado antes de verificarlo
+    return jwt.verify(token, process.env.JWT_SECRET); //verificar el token utilizando la clave secreta y devolver los datos decodificados
   } catch (err) {
     return null; //ficha no válida
   }
+};
+
+const tokenBlacklist = new Set();
+
+export const invalidarToken = (token) => {
+  tokenBlacklist.add(token);
+};
+
+export const tokenEstaInvalidado = (token) => {
+  return tokenBlacklist.has(token);
 };

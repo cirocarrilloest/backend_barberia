@@ -1,11 +1,11 @@
-// BACKEND/seed.js
+// backend/seed.js
 import { connectDB, getPool } from "./src/config/db.js";
 import bcrypt from "bcryptjs";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-// Datos de ejemplo
+// Datos de servicios
 const serviciosData = [
   {
     nombre: "Corte de cabello",
@@ -65,64 +65,101 @@ const serviciosData = [
   },
 ];
 
+// Datos de usuarios
 const usuariosData = [
   {
     nombre: "Administrador",
     email: "admin@barberia.com",
     rol: "admin",
     telefono: "3000000000",
+    passEspecial: "admin123",
   },
   {
     nombre: "Juan Pérez",
     email: "juan@barberia.com",
     rol: "barbero",
     telefono: "3001112222",
+    passEspecial: "barbero123",
   },
   {
     nombre: "Carlos López",
     email: "carlos@barberia.com",
     rol: "barbero",
     telefono: "3003334444",
+    passEspecial: "barbero123",
   },
   {
     nombre: "Miguel Ángel",
     email: "miguel@barberia.com",
     rol: "barbero",
     telefono: "3005556666",
-  },
-  {
-    nombre: "Cliente Test",
-    email: "cliente@test.com",
-    rol: "cliente",
-    telefono: "3007778888",
+    passEspecial: "barbero123",
   },
   {
     nombre: "Ana García",
     email: "ana@test.com",
     rol: "cliente",
     telefono: "3009990000",
+    passEspecial: "password123",
   },
   {
     nombre: "Pedro Rodríguez",
     email: "pedro@test.com",
     rol: "cliente",
     telefono: "3011112222",
+    passEspecial: "password123",
   },
   {
     nombre: "Laura Martínez",
     email: "laura@test.com",
     rol: "cliente",
     telefono: "3013334444",
+    passEspecial: "password123",
   },
   {
     nombre: "Diego Sánchez",
     email: "diego@test.com",
     rol: "cliente",
     telefono: "3015556666",
+    passEspecial: "password123",
+  },
+  {
+    nombre: "Cliente VIP",
+    email: "cliente@test.com",
+    rol: "cliente",
+    telefono: "3007778888",
+    passEspecial: "123456",
   },
 ];
 
-// Función para generar fechas aleatorias en un rango
+// Horarios de barberos (días laborales)
+const horariosBarberosData = [
+  // Juan Pérez (id asumido 2)
+  { dia_semana: "lunes", hora_inicio: "09:00", hora_fin: "18:00" },
+  { dia_semana: "martes", hora_inicio: "09:00", hora_fin: "18:00" },
+  { dia_semana: "miercoles", hora_inicio: "09:00", hora_fin: "18:00" },
+  { dia_semana: "jueves", hora_inicio: "09:00", hora_fin: "18:00" },
+  { dia_semana: "viernes", hora_inicio: "09:00", hora_fin: "18:00" },
+  { dia_semana: "sabado", hora_inicio: "09:00", hora_fin: "14:00" },
+
+  // Carlos López (id asumido 3)
+  { dia_semana: "lunes", hora_inicio: "10:00", hora_fin: "19:00" },
+  { dia_semana: "martes", hora_inicio: "10:00", hora_fin: "19:00" },
+  { dia_semana: "miercoles", hora_inicio: "10:00", hora_fin: "19:00" },
+  { dia_semana: "jueves", hora_inicio: "10:00", hora_fin: "19:00" },
+  { dia_semana: "viernes", hora_inicio: "10:00", hora_fin: "19:00" },
+  { dia_semana: "sabado", hora_inicio: "10:00", hora_fin: "15:00" },
+
+  // Miguel Ángel (id asumido 4)
+  { dia_semana: "lunes", hora_inicio: "08:00", hora_fin: "17:00" },
+  { dia_semana: "martes", hora_inicio: "08:00", hora_fin: "17:00" },
+  { dia_semana: "miercoles", hora_inicio: "08:00", hora_fin: "17:00" },
+  { dia_semana: "jueves", hora_inicio: "08:00", hora_fin: "17:00" },
+  { dia_semana: "viernes", hora_inicio: "08:00", hora_fin: "17:00" },
+  { dia_semana: "sabado", hora_inicio: "08:00", hora_fin: "13:00" },
+];
+
+// Función para generar fechas aleatorias
 function getRandomDate(startDate, endDate) {
   const start = new Date(startDate);
   const end = new Date(endDate);
@@ -132,28 +169,61 @@ function getRandomDate(startDate, endDate) {
   return randomDate.toISOString().split("T")[0];
 }
 
-// Función para generar hora aleatoria (entre 9:00 y 19:00)
-function getRandomHour() {
-  const hours = [9, 10, 11, 14, 15, 16, 17, 18]; // Horas laborales (con hora de almuerzo)
-  const randomHour = hours[Math.floor(Math.random() * hours.length)];
-  const minutes = [0, 15, 30, 45];
-  const randomMinute = minutes[Math.floor(Math.random() * minutes.length)];
-  return `${randomHour.toString().padStart(2, "0")}:${randomMinute.toString().padStart(2, "0")}:00`;
+// Función para generar hora aleatoria dentro del horario laboral
+function getRandomHoraLaboral(horarioInicio, horarioFin) {
+  const [horaInicio, minInicio] = horarioInicio.split(":").map(Number);
+  const [horaFin, minFin] = horarioFin.split(":").map(Number);
+
+  const minutosInicio = horaInicio * 60 + minInicio;
+  const minutosFin = horaFin * 60 + minFin;
+
+  // Generar hora en intervalos de 30 minutos
+  const minutosDisponibles = [];
+  for (let mins = minutosInicio; mins < minutosFin; mins += 30) {
+    minutosDisponibles.push(mins);
+  }
+
+  if (minutosDisponibles.length === 0) return "09:00";
+
+  const minutosAleatorios =
+    minutosDisponibles[Math.floor(Math.random() * minutosDisponibles.length)];
+  const hora = Math.floor(minutosAleatorios / 60);
+  const minutos = minutosAleatorios % 60;
+  return `${hora.toString().padStart(2, "0")}:${minutos.toString().padStart(2, "0")}:00`;
 }
 
-const citasData = [];
+// Obtener horario laboral de un barbero para una fecha específica
+function getHorarioLaboral(barberoId, fecha, horariosMap) {
+  const diasSemana = [
+    "domingo",
+    "lunes",
+    "martes",
+    "miercoles",
+    "jueves",
+    "viernes",
+    "sabado",
+  ];
+  const fechaObj = new Date(fecha);
+  const diaSemana = diasSemana[fechaObj.getDay()];
 
-// Generar 50 citas aleatorias
-const barberosIds = []; // Se llenará después de insertar usuarios
-const clientesIds = [];
-const serviciosIds = [];
+  const horarios = horariosMap.get(barberoId) || [];
+  return horarios.find((h) => h.dia_semana === diaSemana);
+}
 
-const estados = ["pendiente", "confirmada", "completada", "cancelada"];
-const fechaInicio = "2024-01-01";
-const fechaFin = "2026-12-31";
+// Generar citas aleatorias respetando horarios laborales
+async function generarCitasAleatorias(
+  pool,
+  barberosIds,
+  clientesIds,
+  serviciosIds,
+  horariosMap,
+) {
+  const citasData = [];
+  const fechaInicio = "2025-05-01";
+  const fechaFin = "2025-05-31";
+  const estados = ["pendiente", "confirmada", "completada", "cancelada"];
 
-const crearCitasAleatorias = async () => {
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 60; i++) {
     const clienteId =
       clientesIds[Math.floor(Math.random() * clientesIds.length)];
     const barberoId =
@@ -161,17 +231,28 @@ const crearCitasAleatorias = async () => {
     const servicioId =
       serviciosIds[Math.floor(Math.random() * serviciosIds.length)];
     const fecha = getRandomDate(fechaInicio, fechaFin);
-    const hora = getRandomHour();
 
-    // Dar más peso a estados completados y confirmados
-    let estado;
+    // Verificar horario laboral
+    const horario = getHorarioLaboral(barberoId, fecha, horariosMap);
+    if (!horario) continue; // No trabaja ese día
+
+    const hora = getRandomHoraLaboral(horario.hora_inicio, horario.hora_fin);
+
+    // Verificar que no haya duplicado (mismo barbero, fecha, hora)
+    const [existe] = await pool.execute(
+      "SELECT id FROM citas WHERE barbero_id = ? AND fecha = ? AND hora = ?",
+      [barberoId, fecha, hora],
+    );
+
+    if (existe.length > 0) continue;
+
     const random = Math.random();
+    let estado;
     if (random < 0.5) estado = "completada";
     else if (random < 0.7) estado = "confirmada";
     else if (random < 0.85) estado = "pendiente";
     else estado = "cancelada";
 
-    // Notas opcionales
     const notas = Math.random() > 0.7 ? "Cliente solicita recordatorio" : null;
 
     citasData.push({
@@ -184,50 +265,46 @@ const crearCitasAleatorias = async () => {
       notas: notas,
     });
   }
-};
 
+  return citasData;
+}
+
+// Función principal
 const crearSemilla = async () => {
   try {
     await connectDB();
     const pool = getPool();
 
     console.log("🗑️  Limpiando datos existentes...");
-
-    // Desactivar verificaciones de claves foráneas temporalmente
     await pool.execute("SET FOREIGN_KEY_CHECKS = 0");
-
-    // Limpiar tablas en orden correcto
     await pool.execute("DELETE FROM citas");
+    await pool.execute("DELETE FROM horarios_barbero");
     await pool.execute("DELETE FROM servicios");
     await pool.execute("DELETE FROM usuarios");
-
-    // Reactivar verificaciones
     await pool.execute("SET FOREIGN_KEY_CHECKS = 1");
 
     console.log("✅ Datos anteriores eliminados");
 
-    // Hash de contraseñas (todas usarán 'password123' como ejemplo)
     const salt = await bcrypt.genSalt(10);
-    const hashPassword = await bcrypt.hash("password123", salt);
-
-    // Contraseñas específicas para los usuarios importantes
-    const adminPass = await bcrypt.hash("admin123", salt);
-    const barberoPass = await bcrypt.hash("barbero123", salt);
-    const clientePass = await bcrypt.hash("123456", salt);
+    const defaultPass = await bcrypt.hash("password123", salt);
 
     // Insertar usuarios
     console.log("👤 Creando usuarios...");
+    const barberosIds = [];
+    const clientesIds = [];
+    const usuariosMap = new Map();
 
     for (const usuario of usuariosData) {
-      let password = hashPassword;
-      if (usuario.email === "admin@barberia.com") password = adminPass;
-      if (
-        usuario.email === "juan@barberia.com" ||
-        usuario.email === "carlos@barberia.com" ||
-        usuario.email === "miguel@barberia.com"
-      )
-        password = barberoPass;
-      if (usuario.email === "cliente@test.com") password = clientePass;
+      let password;
+      if (usuario.email === "admin@barberia.com") {
+        password = await bcrypt.hash("admin123", salt);
+      } else if (usuario.rol === "barbero") {
+        password = await bcrypt.hash("barbero123", salt);
+      } else if (usuario.email === "cliente@test.com") {
+        password = await bcrypt.hash("123456", salt);
+      } else {
+        password = defaultPass;
+      }
 
       const [result] = await pool.execute(
         "INSERT INTO usuarios (nombre, email, pass, rol, telefono) VALUES (?, ?, ?, ?, ?)",
@@ -240,21 +317,51 @@ const crearSemilla = async () => {
         ],
       );
 
-      // Guardar IDs para referencias futuras
-      if (usuario.rol === "barbero") {
-        barberosIds.push(result.insertId);
-      } else if (usuario.rol === "cliente") {
-        clientesIds.push(result.insertId);
-      }
+      usuariosMap.set(usuario.email, result.insertId);
+
+      if (usuario.rol === "barbero") barberosIds.push(result.insertId);
+      if (usuario.rol === "cliente") clientesIds.push(result.insertId);
 
       console.log(
-        `   ✅ ${usuario.nombre} (${usuario.rol}) - ${usuario.email} / ${usuario.rol === "admin" ? "admin123" : usuario.rol === "barbero" ? "barbero123" : usuario.rol === "cliente" && usuario.email === "cliente@test.com" ? "123456" : "password123"}`,
+        `   ✅ ${usuario.nombre} (${usuario.rol}) - ${usuario.email}`,
       );
     }
 
+    // Insertar horarios de barberos
+    console.log("⏰ Configurando horarios de barberos...");
+    const horariosMap = new Map();
+
+    // Mapear emails a IDs
+    const emailToId = {
+      "juan@barberia.com": barberosIds[0],
+      "carlos@barberia.com": barberosIds[1],
+      "miguel@barberia.com": barberosIds[2],
+    };
+
+    for (const horario of horariosBarberosData) {
+      let barberoId;
+      if (horariosBarberosData.indexOf(horario) < 6)
+        barberoId = emailToId["juan@barberia.com"];
+      else if (horariosBarberosData.indexOf(horario) < 12)
+        barberoId = emailToId["carlos@barberia.com"];
+      else barberoId = emailToId["miguel@barberia.com"];
+
+      await pool.execute(
+        `INSERT INTO horarios_barbero (barbero_id, dia_semana, hora_inicio, hora_fin, activo) 
+         VALUES (?, ?, ?, ?, TRUE)`,
+        [barberoId, horario.dia_semana, horario.hora_inicio, horario.hora_fin],
+      );
+
+      if (!horariosMap.has(barberoId)) horariosMap.set(barberoId, []);
+      horariosMap.get(barberoId).push(horario);
+    }
+    console.log(
+      `   ✅ Horarios configurados para ${barberosIds.length} barberos`,
+    );
+
     // Insertar servicios
     console.log("💇 Creando servicios...");
-
+    const serviciosIds = [];
     for (const servicio of serviciosData) {
       const [result] = await pool.execute(
         "INSERT INTO servicios (nombre, descripcion, duracion, precio, activo) VALUES (?, ?, ?, ?, ?)",
@@ -273,15 +380,20 @@ const crearSemilla = async () => {
     }
 
     // Generar citas aleatorias
-    console.log("📅 Generando citas aleatorias...");
-    await crearCitasAleatorias();
+    console.log("📅 Generando citas aleatorias respetando horarios...");
+    const citasData = await generarCitasAleatorias(
+      pool,
+      barberosIds,
+      clientesIds,
+      serviciosIds,
+      horariosMap,
+    );
 
-    // Insertar citas
     let citasInsertadas = 0;
     for (const cita of citasData) {
       await pool.execute(
         `INSERT INTO citas (cliente_id, barbero_id, servicio_id, fecha, hora, estado, notas) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
         [
           cita.cliente_id,
           cita.barbero_id,
@@ -294,61 +406,34 @@ const crearSemilla = async () => {
       );
       citasInsertadas++;
     }
-
     console.log(`   ✅ ${citasInsertadas} citas creadas exitosamente`);
 
-    // Mostrar resumen estadístico
+    // Mostrar resumen
     console.log("\n" + "=".repeat(50));
     console.log("📊 RESUMEN DE LA BASE DE DATOS");
     console.log("=".repeat(50));
 
     const [stats] = await pool.execute(`
-            SELECT 
-                (SELECT COUNT(*) FROM usuarios WHERE rol = 'admin') as admins,
-                (SELECT COUNT(*) FROM usuarios WHERE rol = 'barbero') as barberos,
-                (SELECT COUNT(*) FROM usuarios WHERE rol = 'cliente') as clientes,
-                (SELECT COUNT(*) FROM servicios WHERE activo = 1) as servicios_activos,
-                (SELECT COUNT(*) FROM citas) as total_citas,
-                (SELECT COUNT(*) FROM citas WHERE estado = 'completada') as citas_completadas,
-                (SELECT COUNT(*) FROM citas WHERE estado = 'cancelada') as citas_canceladas,
-                (SELECT COUNT(*) FROM citas WHERE estado = 'pendiente') as citas_pendientes,
-                (SELECT COUNT(*) FROM citas WHERE estado = 'confirmada') as citas_confirmadas
-        `);
+      SELECT 
+        (SELECT COUNT(*) FROM usuarios WHERE rol = 'admin') as admins,
+        (SELECT COUNT(*) FROM usuarios WHERE rol = 'barbero') as barberos,
+        (SELECT COUNT(*) FROM usuarios WHERE rol = 'cliente') as clientes,
+        (SELECT COUNT(*) FROM servicios WHERE activo = 1) as servicios_activos,
+        (SELECT COUNT(*) FROM citas) as total_citas,
+        (SELECT COUNT(*) FROM horarios_barbero WHERE activo = 1) as horarios_configurados
+    `);
 
     console.log(`👥 Usuarios:`);
     console.log(`   - Admins: ${stats[0].admins}`);
     console.log(`   - Barberos: ${stats[0].barberos}`);
     console.log(`   - Clientes: ${stats[0].clientes}`);
     console.log(`\n💇 Servicios activos: ${stats[0].servicios_activos}`);
-    console.log(`\n📅 Citas:`);
-    console.log(`   - Total: ${stats[0].total_citas}`);
-    console.log(`   - Completadas: ${stats[0].citas_completadas}`);
-    console.log(`   - Confirmadas: ${stats[0].citas_confirmadas}`);
-    console.log(`   - Pendientes: ${stats[0].citas_pendientes}`);
-    console.log(`   - Canceladas: ${stats[0].citas_canceladas}`);
+    console.log(`📅 Citas generadas: ${stats[0].total_citas}`);
+    console.log(`⏰ Horarios configurados: ${stats[0].horarios_configurados}`);
 
-    // Consultas de ejemplo
     console.log("\n" + "=".repeat(50));
-    console.log("🔍 CONSULTAS DE EJEMPLO");
+    console.log("🔐 CREDENCIALES DE ACCESO");
     console.log("=".repeat(50));
-
-    const [serviciosTop] = await pool.execute(`
-            SELECT s.nombre, COUNT(c.id) as total_citas
-            FROM servicios s
-            JOIN citas c ON s.id = c.servicio_id
-            WHERE c.estado IN ('completada', 'confirmada')
-            GROUP BY s.id
-            ORDER BY total_citas DESC
-            LIMIT 3
-        `);
-
-    console.log("📊 Servicios más populares:");
-    serviciosTop.forEach((s) => {
-      console.log(`   - ${s.nombre}: ${s.total_citas} citas`);
-    });
-
-    console.log("\n🎉 ¡Semilla creada exitosamente!");
-    console.log("\n🔐 CREDENCIALES DE ACCESO:");
     console.log("   Admin:    admin@barberia.com / admin123");
     console.log("   Barbero:  juan@barberia.com / barbero123");
     console.log("   Barbero:  carlos@barberia.com / barbero123");
@@ -357,6 +442,7 @@ const crearSemilla = async () => {
     console.log("   Cliente:  ana@test.com / password123");
     console.log("   Cliente:  pedro@test.com / password123");
 
+    console.log("\n🎉 ¡Semilla creada exitosamente!");
     process.exit(0);
   } catch (error) {
     console.error("❌ Error al crear la semilla:", error);

@@ -329,3 +329,134 @@ export const getBarberos = async (req, res) => {
     res.status(500).json({ ok: false, message: "Error interno del servidor" });
   }
 };
+
+export const getCitasDeUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { estado } = req.query;
+
+    const usuario = await userModel.getUserById(id);
+    if (!usuario) {
+      return res.status(404).json({
+        ok: false,
+        message: "Usuario no encontrado",
+      });
+    }
+
+    const pool = getPool();
+    let query = `
+      SELECT c.*,
+             b.nombre as barbero_nombre,
+             s.nombre as servicio_nombre, s.duracion, s.precio
+      FROM citas c
+      JOIN usuarios b ON c.barbero_id = b.id
+      JOIN servicios s ON c.servicio_id = s.id
+      WHERE c.cliente_id = ?
+    `;
+    const params = [id];
+
+    if (estado) {
+      query += " AND c.estado = ?";
+      params.push(estado);
+    }
+
+    query += " ORDER BY c.fecha DESC, c.hora DESC";
+
+    const [citas] = await pool.execute(query, params);
+
+    res.json({
+      ok: true,
+      usuario: { id: usuario.id, nombre: usuario.nombre },
+      citas,
+      total: citas.length,
+    });
+  } catch (error) {
+    console.error("Error al obtener citas de usuario:", error);
+    res.status(500).json({
+      ok: false,
+      message: "Error interno del servidor",
+    });
+  }
+};
+
+export const setHorarioBarbero = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { dia_semana, hora_inicio, hora_fin } = req.body;
+
+    const diasValidos = [
+      "lunes",
+      "martes",
+      "miercoles",
+      "jueves",
+      "viernes",
+      "sabado",
+      "domingo",
+    ];
+    if (!diasValidos.includes(dia_semana)) {
+      return res.status(400).json({
+        ok: false,
+        message: `Día no válido. Use: ${diasValidos.join(", ")}`,
+      });
+    }
+
+    if (!hora_inicio || !hora_fin) {
+      return res.status(400).json({
+        ok: false,
+        message: "Se requiere hora_inicio y hora_fin",
+      });
+    }
+
+    const pool = getPool();
+    await pool.execute(
+      `INSERT INTO horarios_barbero (barbero_id, dia_semana, hora_inicio, hora_fin)
+       VALUES (?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE hora_inicio = ?, hora_fin = ?, activo = TRUE`,
+      [id, dia_semana, hora_inicio, hora_fin, hora_inicio, hora_fin],
+    );
+
+    res.json({
+      ok: true,
+      message: "Horario configurado exitosamente",
+    });
+  } catch (error) {
+    console.error("Error al configurar horario:", error);
+    res.status(500).json({ ok: false, message: "Error interno del servidor" });
+  }
+};
+
+export const getHorarioBarbero = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const pool = getPool();
+
+    const [rows] = await pool.execute(
+      "SELECT * FROM horarios_barbero WHERE barbero_id = ? AND activo = TRUE ORDER BY FIELD(dia_semana,'lunes','martes','miercoles','jueves','viernes','sabado','domingo')",
+      [id],
+    );
+
+    res.json({ ok: true, horarios: rows });
+  } catch (error) {
+    console.error("Error al obtener horario:", error);
+    res.status(500).json({ ok: false, message: "Error interno del servidor" });
+  }
+};
+
+export const deleteHorarioBarbero = async (req, res) => {
+  try {
+    const { id, dia } = req.params;
+    const pool = getPool();
+
+    await pool.execute(
+      "UPDATE horarios_barbero SET activo = FALSE WHERE barbero_id = ? AND dia_semana = ?",
+      [id, dia],
+    );
+
+    res.json({ ok: true, message: "Horario eliminado exitosamente" });
+  } catch (error) {
+    console.error("Error al eliminar horario:", error);
+    res.status(500).json({ ok: false, message: "Error interno del servidor" });
+  }
+};
+
+export default { setHorarioBarbero, getHorarioBarbero, deleteHorarioBarbero };
