@@ -1,0 +1,2404 @@
+{
+  "info": {
+    "_postman_id": "999a2165-f756-4b00-ada1-92784bdefaa9",
+    "name": "Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "53434471",
+    "_collection_link": "https://go.postman.co/collection/53434471-999a2165-f756-4b00-ada1-92784bdefaa9?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "auth - Registro",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\":\"lucas andres gomez\",\r\n    \"email\":\"lucas@gmail.com\",\r\n    \"pass\":\"234567\",\r\n    \"telefono\": \"3217777777\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/registro",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "registro"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - Ingreso - cliente",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"lucas@gmail.com\",\r\n    \"pass\":\"234567\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/ingreso",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "ingreso"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - cerrar sesion",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoiY2xpZW50ZUB0ZXN0LmNvbSIsInJvbCI6ImNsaWVudGUiLCJpYXQiOjE3Nzc1MDM3MTcsImV4cCI6MTc3NzUwNzMxN30.HJQLFMR2VNkp66JGL5q80ip629HgJQyWDSPk2hSWxeU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - Ingreso - barbero",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"carlos@barberia.com\",\r\n    \"pass\":\"barbero123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/ingreso",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "ingreso"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - Ingreso - admin",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"admin@barberia.com\",\r\n    \"pass\":\"admin123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/ingreso",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "ingreso"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - cambio de contraseña",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoiY2xpZW50ZUB0ZXN0LmNvbSIsInJvbCI6ImNsaWVudGUiLCJpYXQiOjE3Nzc1MDQyODcsImV4cCI6MTc3NzUwNzg4N30.jkdX9af9Gmj9wCUuNZMdt6eIj8KmSNr3ZBjp9Ji06Xc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"pass_actual\": \"2345678\",\r\n  \"pass_nueva\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/cambiar-password",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "cambiar-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - ver perfil",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoiY2xpZW50ZUB0ZXN0LmNvbSIsInJvbCI6ImNsaWVudGUiLCJpYXQiOjE3Nzc1MDM3MTcsImV4cCI6MTc3NzUwNzMxN30.HJQLFMR2VNkp66JGL5q80ip629HgJQyWDSPk2hSWxeU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ver perfil barbero",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwNTE4MywiZXhwIjoxNzc3NTA4NzgzfQ.1RDoLS8dMJtQY_sCJExFT2vHAcLNZJKdbtlgkPYQaww",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\":\"lucas@gmail.com\",\r\n    \"pass\":\"234567\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/barberos/13/perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "barberos",
+            "13",
+            "perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - Actualizar perfil",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksImVtYWlsIjoiY2xpZW50ZUB0ZXN0LmNvbSIsInJvbCI6ImNsaWVudGUiLCJpYXQiOjE3Nzc1MDQyODcsImV4cCI6MTc3NzUwNzg4N30.jkdX9af9Gmj9wCUuNZMdt6eIj8KmSNr3ZBjp9Ji06Xc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"telefono\": \"3013453765\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/perfil",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "perfil"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "auth - eliminar perfil",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwNDk3NCwiZXhwIjoxNzc3NTA4NTc0fQ.som8lKvqeeQy2biBAsx2M5Jv0sY8N9twcxsKICxoUsE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/auth/cuenta",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "auth",
+            "cuenta"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicios - ver servicios",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwNTE4MywiZXhwIjoxNzc3NTA4NzgzfQ.1RDoLS8dMJtQY_sCJExFT2vHAcLNZJKdbtlgkPYQaww",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicios - ver servicios por id",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwNTE4MywiZXhwIjoxNzc3NTA4NzgzfQ.1RDoLS8dMJtQY_sCJExFT2vHAcLNZJKdbtlgkPYQaww",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/12",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            "12"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicios - ver barberos por servicio",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwNTE4MywiZXhwIjoxNzc3NTA4NzgzfQ.1RDoLS8dMJtQY_sCJExFT2vHAcLNZJKdbtlgkPYQaww",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/13/barberos",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            "13",
+            "barberos"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicios - activar o desactivar servicio",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MDU5NDgsImV4cCI6MTc3NzUwOTU0OH0.RODVzTbkjhRGl-3h_sPJOjzaHexqGSf4jvn59zqWeJE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/14/toggle-activo",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            "14",
+            "toggle-activo"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admin barbero lista",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/barberos/listar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "barberos",
+            "listar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ver servicios activos",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJtYXJjZWxvb0BnbWFpbC5jb20iLCJyb2wiOiJjbGllbnRlIiwiaWF0IjoxNzc3MzQ5OTY4LCJleHAiOjE3NzczNTM1Njh9.BdhxjT1HzAEKnwJqEpUOTOXqkk1_u0T4rMGmc38GphI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/servicios?activos=true",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios"
+          ],
+          "query": [
+            {
+              "key": "activos",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "ver servicios individual",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJtYXJjZWxvb0BnbWFpbC5jb20iLCJyb2wiOiJjbGllbnRlIiwiaWF0IjoxNzc3MzQ5OTY4LCJleHAiOjE3NzczNTM1Njh9.BdhxjT1HzAEKnwJqEpUOTOXqkk1_u0T4rMGmc38GphI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/4",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            "4"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - disponibilidad por horario especifico",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJtYXJjZWxvb0BnbWFpbC5jb20iLCJyb2wiOiJjbGllbnRlIiwiaWF0IjoxNzc3NDUwMjA0LCJleHAiOjE3Nzc0NTM4MDR9.9o_9e54Z9svtSJ4JyYGoqrihSSHhJNX6OXASYCYMSKI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/disponibilidad?barbero_id=2&fecha=2026-12-20&hora=10:00",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "disponibilidad"
+          ],
+          "query": [
+            {
+              "key": "barbero_id",
+              "value": "2"
+            },
+            {
+              "key": "fecha",
+              "value": "2026-12-20"
+            },
+            {
+              "key": "hora",
+              "value": "10:00"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - disponibilidad horario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/barbero/13/horarios-disponibles?fecha=2026-05-01",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "barbero",
+            "13",
+            "horarios-disponibles"
+          ],
+          "query": [
+            {
+              "key": "fecha",
+              "value": "2026-05-01"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - disponibilidad de barbero",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/barbero/13/horarios-disponibles?fecha=2026-04-29",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "barbero",
+            "13",
+            "horarios-disponibles"
+          ],
+          "query": [
+            {
+              "key": "fecha",
+              "value": "2026-04-29"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - mis citas",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwODg4OSwiZXhwIjoxNzc3NTEyNDg5fQ.FB4YGHXdtFInOSGyadADd7Y5XZ4IfItyulqDCpUQxrM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/mis-citas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "mis-citas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi ver todas las citas",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/todas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "todas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi ver cita por estado",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzM3MDA1MiwiZXhwIjoxNzc3MzczNjUyfQ.-txahYPWjlpWJKug1YevWHWS2JTW6ePU29qNyefx4EM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/todas?estado=pendiente ",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "todas"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "pendiente "
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi ver cita de usuarios",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/21/citas?estado=cancelada",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "21",
+            "citas"
+          ],
+          "query": [
+            {
+              "key": "estado",
+              "value": "cancelada"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi por rango de fecha",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzM3MDA1MiwiZXhwIjoxNzc3MzczNjUyfQ.-txahYPWjlpWJKug1YevWHWS2JTW6ePU29qNyefx4EM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/todas?fecha_desde=2026-04-01&fecha_hasta=2026-04-31",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "todas"
+          ],
+          "query": [
+            {
+              "key": "fecha_desde",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_hasta",
+              "value": "2026-04-31"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi ver citas de un barbero",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzM3MDA1MiwiZXhwIjoxNzc3MzczNjUyfQ.-txahYPWjlpWJKug1YevWHWS2JTW6ePU29qNyefx4EM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/barbero/8",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "barbero",
+            "8"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi ver citas de un barbero Con fecha determinada",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzM3MDA1MiwiZXhwIjoxNzc3MzczNjUyfQ.-txahYPWjlpWJKug1YevWHWS2JTW6ePU29qNyefx4EM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/barbero/8?fecha=2026-04-29",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "barbero",
+            "8"
+          ],
+          "query": [
+            {
+              "key": "fecha",
+              "value": "2026-04-29"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi dashboard citas",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/dashboard",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "dashboard"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi reporte de ingresos mes",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/reporte/ingresos?periodo=mes&fecha_inicio=2026-04-01&fecha_fin=2026-04-30",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "reporte",
+            "ingresos"
+          ],
+          "query": [
+            {
+              "key": "periodo",
+              "value": "mes"
+            },
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi reporte de ingresos dia",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzM5NzQ1OSwiZXhwIjoxNzc3NDAxMDU5fQ.wIb2LwUN1DOehfmD3cXnotqbVVaL7X6gET9VRn6rGzA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/reporte/ingresos?periodo=dia&fecha_inicio=2026-04-01&fecha_fin=2026-04-30",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "reporte",
+            "ingresos"
+          ],
+          "query": [
+            {
+              "key": "periodo",
+              "value": "dia"
+            },
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi reporte de ingresos año",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzM5NzQ1OSwiZXhwIjoxNzc3NDAxMDU5fQ.wIb2LwUN1DOehfmD3cXnotqbVVaL7X6gET9VRn6rGzA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/reporte/ingresos?periodo=año&fecha_inicio=2026-01-01&fecha_fin=2026-12-31",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "reporte",
+            "ingresos"
+          ],
+          "query": [
+            {
+              "key": "periodo",
+              "value": "año"
+            },
+            {
+              "key": "fecha_inicio",
+              "value": "2026-01-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-12-31"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi reporte servicios top",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/reporte/servicios-top?fecha_inicio=2026-04-01&fecha_fin=2026-04-30&limite=5",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "reporte",
+            "servicios-top"
+          ],
+          "query": [
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            },
+            {
+              "key": "limite",
+              "value": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi reporte top cliente",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/reporte/clientes-top?fecha_inicio=2026-04-01&fecha_fin=2026-04-30&limite=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "reporte",
+            "clientes-top"
+          ],
+          "query": [
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            },
+            {
+              "key": "limite",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi cancelaciones de barbero",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/reporte/tasa-cancelacion?fecha_inicio=2026-04-01&fecha_fin=2026-04-30",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "reporte",
+            "tasa-cancelacion"
+          ],
+          "query": [
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - admi distribucion del citas por hora",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/distribucion-horaria?fecha_inicio=2026-04-01&fecha_fin=2026-04-30",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "distribucion-horaria"
+          ],
+          "query": [
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi mostrar todos los usuarios",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi mostrar todos los usuarios por rol",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzQwMTY2MywiZXhwIjoxNzc3NDA1MjYzfQ.cBodsFTMAL-t3odJPbB-rDAmRiJtphWqOQLrqCpdNVg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios?rol=admin",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios"
+          ],
+          "query": [
+            {
+              "key": "rol",
+              "value": "admin"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi mostrar todos los usuarios por nombre",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJhZG1pbkBiYXJiZXJpYS5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc3NzQwMTY2MywiZXhwIjoxNzc3NDA1MjYzfQ.cBodsFTMAL-t3odJPbB-rDAmRiJtphWqOQLrqCpdNVg",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios?search=Adm",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios"
+          ],
+          "query": [
+            {
+              "key": "search",
+              "value": "Adm"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi detalles de usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/15",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "15"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi modificar usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Nombre Actualizado\",\r\n    \"rol\": \"admin\",\r\n    \"telefono\":\"3101000000\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/22",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "22"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi eliminar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/22",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "22"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi cambiar rol de usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"rol\": \"cliente\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/22/rol",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "22",
+            "rol"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admi crear usuario",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTI1NjMsImV4cCI6MTc3NzUxNjE2M30.3yoti5WeuFV4GwCJT7l80J8da2MuB05bveWkYyAQtDY",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Nuevo Barbero\",\r\n    \"email\": \"nuevo@barberia.com\",\r\n    \"pass\": \"123456\",\r\n    \"rol\": \"barbero\",\r\n    \"telefono\": \"3009998888\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admin configurara horarios de barbero",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"dia_semana\": \"jueves\",\r\n  \"hora_inicio\": \"08:00\",\r\n  \"hora_fin\": \"17:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/barberos/13/horario",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "barberos",
+            "13",
+            "horario"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admin eliminar horarios de barbero",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/barberos/13/horario/lunes",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "barberos",
+            "13",
+            "horario",
+            "lunes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "gestion - admin ver horarios de barbero",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MTQzNTksImV4cCI6MTc3NzUxNzk1OX0.eSgUnJuGo6obmX_zkdEzL9Ff4xz_6k1apWhmYUM9BxM",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios/barberos/13/horario",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "usuarios",
+            "barberos",
+            "13",
+            "horario"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero agenda",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiY2FybG9zQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc1MTExNTgsImV4cCI6MTc3NzUxNDc1OH0.AGv9h84GUn9hV6lmjuj5On5mRAkvH1cOK5a_POfGSNw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/agenda-dia",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "agenda-dia"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero agenda semana",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiY2FybG9zQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc1MTExNTgsImV4cCI6MTc3NzUxNDc1OH0.AGv9h84GUn9hV6lmjuj5On5mRAkvH1cOK5a_POfGSNw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/barbero/13/semana?fecha_inicio=2026-04-26",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "barbero",
+            "13",
+            "semana"
+          ],
+          "query": [
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-26"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero resumen de citas",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiY2FybG9zQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc1MTExNTgsImV4cCI6MTc3NzUxNDc1OH0.AGv9h84GUn9hV6lmjuj5On5mRAkvH1cOK5a_POfGSNw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/resumen?fecha_inicio=2026-04-01&fecha_fin=2026-04-30",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "resumen"
+          ],
+          "query": [
+            {
+              "key": "fecha_inicio",
+              "value": "2026-04-01"
+            },
+            {
+              "key": "fecha_fin",
+              "value": "2026-04-30"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero finalizar/completar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiY2FybG9zQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc1MTExNTgsImV4cCI6MTc3NzUxNDc1OH0.AGv9h84GUn9hV6lmjuj5On5mRAkvH1cOK5a_POfGSNw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/57/finalizar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "57",
+            "finalizar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero finalizar/completar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiY2FybG9zQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc1MTExNTgsImV4cCI6MTc3NzUxNDc1OH0.AGv9h84GUn9hV6lmjuj5On5mRAkvH1cOK5a_POfGSNw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/57/confirmar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "57",
+            "confirmar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero confimar cita",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMsImVtYWlsIjoiY2FybG9zQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc1MTExNTgsImV4cCI6MTc3NzUxNDc1OH0.AGv9h84GUn9hV6lmjuj5On5mRAkvH1cOK5a_POfGSNw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"estado\":\"pendiente\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/citas/57/estado",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "57",
+            "estado"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero cancelar cita",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJqdWFuQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3Nzc0MDAwODksImV4cCI6MTc3NzQwMzY4OX0.Y_qq7vyZFdqET0-KzGBpLYJHR0FjjuhvR0nysbmkEgI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"estado\": \"cancelada\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/citas/3/estado",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "3",
+            "estado"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - barbero agenda por fecha",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwiZW1haWwiOiJqdWFuQGJhcmJlcmlhLmNvbSIsInJvbCI6ImJhcmJlcm8iLCJpYXQiOjE3NzczNjU0MDAsImV4cCI6MTc3NzM2OTAwMH0.pxBhjmrPmWKh6yicyP8rfkkQudlTA6dUFaRlPW5PHqE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/agenda-dia?fecha=2026-04-29",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "agenda-dia"
+          ],
+          "query": [
+            {
+              "key": "fecha",
+              "value": "2026-04-29"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - proxima",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/proximas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "proximas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - historial",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/historial?limite=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "historial"
+          ],
+          "query": [
+            {
+              "key": "limite",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - proxima",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJtYXJjZWxvb0BnbWFpbC5jb20iLCJyb2wiOiJjbGllbnRlIiwiaWF0IjoxNzc3MzYzMDgyLCJleHAiOjE3NzczNjY2ODJ9.5MRq5tNDt3na2ph-hX3sgdgJmsiUukBY_cpXBqVY4gw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/historial?limite=10",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "historial"
+          ],
+          "query": [
+            {
+              "key": "limite",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - consultar 1 cita",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/71",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "71"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - eliminar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/citas/71",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "71"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - agendar",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwNjk2NCwiZXhwIjoxNzc3NTEwNTY0fQ.3i8UWeGjIAm7hxUV9nfCoIxlRxpbckUiH7UDgF35VAc",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"barbero_id\": 14,\r\n  \"servicio_id\": 12,\r\n  \"fecha\": \"2025-05-03\",\r\n  \"hora\": \"12:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/citas/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "cita - reagendar cita",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjEsImVtYWlsIjoibHVjYXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc3NzUwOTUzNiwiZXhwIjoxNzc3NTEzMTM2fQ.WXsAI2YOMfG8os4s8gQ8Xc6p_Ti7G7chBqJwPuyRMNI",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"fecha\": \"2026-04-30\",\r\n  \"hora\": \"14:00\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/citas/71/reagendar",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "citas",
+            "71",
+            "reagendar"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicio - Crear servicio",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MDU5NDgsImV4cCI6MTc3NzUwOTU0OH0.RODVzTbkjhRGl-3h_sPJOjzaHexqGSf4jvn59zqWeJE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"nombre\": \"Corte Regular\",\r\n    \"descripcion\": \"Corte con con maquina y terminacion en tijera\",\r\n    \"duracion\": 35,\r\n    \"precio\": 15000,\r\n    \"activo\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicio - Actualizar servicio",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MDU5NDgsImV4cCI6MTc3NzUwOTU0OH0.RODVzTbkjhRGl-3h_sPJOjzaHexqGSf4jvn59zqWeJE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"duracion\": 35,\r\n    \"precio\": 18000,\r\n    \"activo\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/15",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            "15"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "servicio - Eliminar servicio",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTEsImVtYWlsIjoiYWRtaW5AYmFyYmVyaWEuY29tIiwicm9sIjoiYWRtaW4iLCJpYXQiOjE3Nzc1MDU5NDgsImV4cCI6MTc3NzUwOTU0OH0.RODVzTbkjhRGl-3h_sPJOjzaHexqGSf4jvn59zqWeJE",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/servicios/15",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "servicios",
+            "15"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
