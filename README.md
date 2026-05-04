@@ -23,7 +23,7 @@ API REST desarrollada con Node.js, Express y MySQL que permite registrar e inici
 ### clonar repositorio
 
 ```bash
-git clone https://github.com/cirocarrilloest/MI-PROYECTO_NODE.git
+git clone https://github.com/cirocarrilloest/backend_barberia.git
 cd MI-PROYECTO_NODE
 ```
 
